@@ -33,11 +33,29 @@
 
         <input type="submit" value="Search" />
     </form>
-
+    <h1 th:text="${message}"></h1>
     <hr />
+    <h3 th:if="${jobs} and ${jobs.size()}" th:text="${jobs.size()} + ' Result(s)'"></h3>
+    <h3 th:unless="${jobs} and ${jobs.size()}" th:text="'0 Results'"></h3>
 
     <!-- TODO #2 - Loop over jobs map to display all job fields -->
+    <div th:if="${jobs} and ${jobs.size()}">
 
+            <table class="job-listing" th:each="job : ${jobs}">
+                <tbody>
+                <tr th:each="field : ${job}">
+                    <td th:text="${#strings.capitalizeWords(field.key)}"></td>
+                    <td>
+                        <span th:if="${field.key} == 'name'" th:text="${field.value}"></span>
+                        <span>
+                            <a th:unless="${field.key} == 'name'" th:href="@{/list/jobs(column=${field.key},value=${field.value})}" th:text="${field.value}"></a>
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+    </div>
 </div>
 
 </body>
